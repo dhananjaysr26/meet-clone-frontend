@@ -27,7 +27,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const remoteRef = useRef<any>(null);
 
   const peer = () => {
-    if (typeof window && !RTCPeerConnection) return null;
+    if (typeof window === "undefined") return null;
     const peer = new RTCPeerConnection({
       iceServers: [
         {
@@ -43,10 +43,11 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     peer.ontrack = (event) => {
-      // console.log("Track", event)
+      console.log("Track", event);
       const stream = event.streams[0];
       remoteRef.current = stream;
     };
+    // console.log("Returning Peer", { peer });
     return peer;
   };
 
@@ -69,7 +70,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <SocketContext.Provider value={{ socket, isConnected, peer, remoteRef }}>
+    <SocketContext.Provider
+      value={{ socket, isConnected, peer: peer(), remoteRef }}
+    >
       {children}
     </SocketContext.Provider>
   );
