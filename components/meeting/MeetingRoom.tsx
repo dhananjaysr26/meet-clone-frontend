@@ -1,7 +1,6 @@
 "use client";
 import { useSocket } from "@/providers/Socket.provider";
 import React, { useEffect, useRef, useState } from "react";
-import ReactPlayer from "react-player";
 
 interface MeetingRoomProps {
   roomId: string;
